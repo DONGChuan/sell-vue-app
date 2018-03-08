@@ -30,7 +30,7 @@
                   <span class="now">￥{{ food.price }}</span><span class="old" v-show="food.oldPrice">￥{{ food.oldPrice }}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food"/>
+                  <cartcontrol @add="addFood" :food="food"/>
                 </div>
               </div>
             </li>
@@ -38,7 +38,7 @@
         </li>
       </ul>
     </div>
-    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :select-foods="selectFoods"/>
+    <shopcart ref="shopcart" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" :select-foods="selectFoods"/>
   </div>
 </template>
 
@@ -109,6 +109,9 @@ export default {
             let el = foodList[index];
             this.foodsScroll.scrollToElement(el, 300);
         },
+        addFood(target) {
+            this._drop(target);
+        },
         _initScroll() {
             this.menuScroll = new BScroll(this.$refs.menuWrapper, {
                 click: true
@@ -142,6 +145,11 @@ export default {
                 let el = menuList[index];
                 this.menuScroll.scrollToElement(el, 300, 0, -100);
             }
+        },
+        _drop(target) {
+            this.$nextTick(() => { // 优化体验, 异步执行, 用户第一次点击时会有另外一个动画.
+                this.$refs.shopcart.drop(target);
+            });
         }
     }
 };
