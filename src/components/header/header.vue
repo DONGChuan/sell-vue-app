@@ -31,12 +31,12 @@
             <img :src="seller.avatar" width="100%" height="100%">
         </div>
         <transition name="fade">
-            <div v-show="detailShow" class="detail" transition="fade">
+            <div v-show="detailShow" class="detail">
                 <div class="detail-wrapper clearfix">
                     <div class="detail-main">
                         <h1 class="name">{{ seller.name }}</h1>
                         <div class="star-wrapper">
-                            <star :size="48" :score="seller.score"></star>
+                            <star :size="48" :score="seller.score"/>
                         </div>
                         <div class="title">
                             <div class="line"></div>
@@ -55,7 +55,7 @@
                             <div class="line"></div>
                         </div>
                         <div class="bulletion">
-                            <p class="content">{{ seller.bulletin }}}</p>
+                            <p class="content">{{ seller.bulletin }}</p>
                         </div>
                     </div>
                 </div>

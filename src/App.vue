@@ -17,9 +17,11 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import { urlParse } from 'common/js/util';
     import header from 'components/header/header';
 
     const ERR_OK = 0;
+    const debug = process.env.NODE_ENV !== 'production';
 
     export default {
         name: 'App',
@@ -28,14 +30,20 @@
         },
         data() {
             return {
-                seller: {}
+                seller: {
+                    id: (() => {
+                        let queryParam = urlParse();
+                        return queryParam.id;
+                    })()
+                }
             };
         },
         created() {
-            this.$http.get('/api/seller').then((response) => {
+            const url = debug ? '/api/seller' : 'http://ustbhuangyi.com/sell/api/seller';
+            this.$http.get(url + '?id=' + this.seller.id).then((response) => {
                 let responseBody = response.body;
                 if (responseBody.errno === ERR_OK) {
-                    this.seller = responseBody.data;
+                    this.seller = Object.assign({}, this.seller, response.data);
                 }
             });
         }
